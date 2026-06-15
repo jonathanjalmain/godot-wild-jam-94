@@ -18,13 +18,13 @@ func _physics_process(delta: float) -> void:
 
 func _handle_movement() -> void:
 	var dir := Vector2.ZERO
-	if Input.is_key_pressed(KEY_W) or Input.is_key_pressed(KEY_UP):
+	if Input.is_physical_key_pressed(KEY_W) or Input.is_physical_key_pressed(KEY_UP):
 		dir.y -= 1.0
-	if Input.is_key_pressed(KEY_S) or Input.is_key_pressed(KEY_DOWN):
+	if Input.is_physical_key_pressed(KEY_S) or Input.is_physical_key_pressed(KEY_DOWN):
 		dir.y += 1.0
-	if Input.is_key_pressed(KEY_A) or Input.is_key_pressed(KEY_LEFT):
+	if Input.is_physical_key_pressed(KEY_A) or Input.is_physical_key_pressed(KEY_LEFT):
 		dir.x -= 1.0
-	if Input.is_key_pressed(KEY_D) or Input.is_key_pressed(KEY_RIGHT):
+	if Input.is_physical_key_pressed(KEY_D) or Input.is_physical_key_pressed(KEY_RIGHT):
 		dir.x += 1.0
 	velocity = dir.normalized() * GameState.move_speed
 	move_and_slide()
@@ -64,4 +64,4 @@ func _fire_at(target_pos: Vector2) -> void:
 		var p := PROJECTILE_SCENE.instantiate()
 		get_parent().add_child(p)
 		p.global_position = global_position
-		p.setup(dir, GameState.damage, GameState.projectile_speed)
+		p.setup(dir, GameState.damage, GameState.projectile_speed, GameState.projectile_pierce, GameState.poison_dps, GameState.poison_duration)

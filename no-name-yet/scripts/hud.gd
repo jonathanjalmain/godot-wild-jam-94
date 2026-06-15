@@ -29,4 +29,4 @@ func _on_hp_changed(current: float, maximum: float) -> void:
 
 func _on_xp_changed(current: float, needed: float, level: int) -> void:
 	_xp_bar.value = (current / needed * 100.0) if needed > 0.0 else 0.0
-	_level_label.text = "Niveau %d" % level
+	_level_label.text = "Level %d" % level

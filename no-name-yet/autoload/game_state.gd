@@ -4,6 +4,9 @@ signal hp_changed(current: float, maximum: float)
 signal xp_changed(current: float, needed: float, level: int)
 signal level_up(new_level: int)
 signal player_died
+signal game_won
+signal stats_changed
+signal shake_requested(amount: float)
 
 var max_hp: float = 100.0
 var hp: float = 100.0
@@ -13,6 +16,11 @@ var damage: float = 10.0
 var projectile_count: int = 1
 var projectile_speed: float = 500.0
 var projectile_range: float = 600.0
+var projectile_pierce: int = 0
+var thorns_damage: float = 0.0
+var poison_dps: float = 0.0
+var poison_duration: float = 3.0
+var tentacle_level: int = 0
 
 var xp: float = 0.0
 var level: int = 1
@@ -20,10 +28,14 @@ var xp_to_next: float = 5.0
 var alive: bool = true
 
 const MUTATIONS := [
-	{"id": "extra_arm", "title": "Bras supplementaire", "desc": "+1 projectile par tir"},
-	{"id": "metabolism", "title": "Metabolisme", "desc": "+20% vitesse de tir"},
-	{"id": "compound_eyes", "title": "Yeux composes", "desc": "+25% portee et vitesse"},
-	{"id": "molt", "title": "Mue", "desc": "+25 PV max et soin complet"},
+	{"id": "extra_arm", "title": "Extra Arm", "desc": "+1 projectile per shot"},
+	{"id": "metabolism", "title": "Metabolism", "desc": "+20% fire rate"},
+	{"id": "compound_eyes", "title": "Compound Eyes", "desc": "+25% range and speed"},
+	{"id": "molt", "title": "Molt", "desc": "+25 max HP and full heal"},
+	{"id": "tentacles", "title": "Tentacles", "desc": "Spinning melee aura"},
+	{"id": "spiny_skin", "title": "Spiny Skin", "desc": "Hurt enemies on contact"},
+	{"id": "venom", "title": "Venom", "desc": "Shots poison enemies"},
+	{"id": "mitosis", "title": "Mitosis", "desc": "Shots pierce +1 enemy"},
 ]
 
 
@@ -36,6 +48,11 @@ func reset() -> void:
 	projectile_count = 1
 	projectile_speed = 500.0
 	projectile_range = 600.0
+	projectile_pierce = 0
+	thorns_damage = 0.0
+	poison_dps = 0.0
+	poison_duration = 3.0
+	tentacle_level = 0
 	xp = 0.0
 	level = 1
 	xp_to_next = 5.0
@@ -47,6 +64,7 @@ func take_damage(amount: float) -> void:
 		return
 	hp = max(hp - amount, 0.0)
 	hp_changed.emit(hp, max_hp)
+	shake_requested.emit(0.45)
 	if hp <= 0.0:
 		alive = false
 		player_died.emit()
@@ -86,3 +104,12 @@ func apply_mutation(id: String) -> void:
 			max_hp += 25.0
 			hp = max_hp
 			hp_changed.emit(hp, max_hp)
+		"tentacles":
+			tentacle_level += 1
+		"spiny_skin":
+			thorns_damage += 8.0
+		"venom":
+			poison_dps += 6.0
+		"mitosis":
+			projectile_pierce += 1
+	stats_changed.emit()
