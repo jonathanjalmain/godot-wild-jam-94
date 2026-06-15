@@ -1,9 +1,12 @@
 extends CharacterBody2D
 
+const XP_GEM_SCENE := preload("res://scenes/XPGem.tscn")
+
 @export var max_hp: float = 30.0
 @export var speed: float = 90.0
 @export var contact_damage: float = 10.0
 @export var contact_interval: float = 0.5
+@export var xp_value: float = 1.0
 
 var hp: float
 var _player: Node2D
@@ -45,4 +48,8 @@ func take_damage(amount: float) -> void:
 
 
 func _die() -> void:
+	var gem := XP_GEM_SCENE.instantiate()
+	get_parent().add_child(gem)
+	gem.global_position = global_position
+	gem.value = xp_value
 	queue_free()

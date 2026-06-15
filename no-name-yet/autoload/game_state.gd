@@ -19,6 +19,13 @@ var level: int = 1
 var xp_to_next: float = 5.0
 var alive: bool = true
 
+const MUTATIONS := [
+	{"id": "extra_arm", "title": "Bras supplementaire", "desc": "+1 projectile par tir"},
+	{"id": "metabolism", "title": "Metabolisme", "desc": "+20% vitesse de tir"},
+	{"id": "compound_eyes", "title": "Yeux composes", "desc": "+25% portee et vitesse"},
+	{"id": "molt", "title": "Mue", "desc": "+25 PV max et soin complet"},
+]
+
 
 func reset() -> void:
 	max_hp = 100.0
@@ -58,3 +65,24 @@ func add_xp(amount: float) -> void:
 		xp_to_next = ceil(xp_to_next * 1.25)
 		level_up.emit(level)
 	xp_changed.emit(xp, xp_to_next, level)
+
+
+func get_random_mutations(count: int) -> Array:
+	var pool := MUTATIONS.duplicate()
+	pool.shuffle()
+	return pool.slice(0, min(count, pool.size()))
+
+
+func apply_mutation(id: String) -> void:
+	match id:
+		"extra_arm":
+			projectile_count += 1
+		"metabolism":
+			fire_rate *= 1.2
+		"compound_eyes":
+			projectile_range *= 1.25
+			projectile_speed *= 1.25
+		"molt":
+			max_hp += 25.0
+			hp = max_hp
+			hp_changed.emit(hp, max_hp)

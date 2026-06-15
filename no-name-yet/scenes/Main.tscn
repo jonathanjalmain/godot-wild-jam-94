@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/ui/HUD.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://scenes/ui/LevelUpPanel.tscn" id="4"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1")
@@ -11,3 +13,7 @@ script = ExtResource("1")
 [node name="SpawnTimer" type="Timer" parent="."]
 wait_time = 1.0
 autostart = true
+
+[node name="HUD" parent="." instance=ExtResource("3")]
+
+[node name="LevelUpPanel" parent="." instance=ExtResource("4")]
