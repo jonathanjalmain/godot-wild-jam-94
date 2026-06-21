@@ -76,8 +76,8 @@ const MUTATIONS := [
 	{"id": "metabolism", "title": "Metabolism", "desc": "+20% fire rate", "cat": "offense"},
 	{"id": "compound_eyes", "title": "Compound Eyes", "desc": "+25% range and speed", "cat": "utility"},
 	{"id": "molt", "title": "Molt", "desc": "+25 max HP and full heal", "cat": "defense"},
-	{"id": "orbital_spores", "title": "Orbital Spores", "desc": "Orbiting spores that shred nearby foes", "cat": "offense"},
-	{"id": "pulse_nova", "title": "Pulse Nova", "desc": "Periodic shockwave damaging all around you", "cat": "offense"},
+	{"id": "orbital_spores", "title": "Orbital Spores", "desc": "Orbiting spores that shred nearby foes", "cat": "offense", "unique": true},
+	{"id": "pulse_nova", "title": "Pulse Nova", "desc": "Periodic shockwave damaging all around you", "cat": "offense", "unique": true},
 	{"id": "spiny_skin", "title": "Spiny Skin", "desc": "Hurt enemies on contact", "cat": "defense"},
 	{"id": "venom", "title": "Venom", "desc": "Shots poison enemies", "cat": "offense"},
 	{"id": "mitosis", "title": "Mitosis", "desc": "Shots pierce +1 enemy", "cat": "offense"},
@@ -94,9 +94,9 @@ const MUTATIONS := [
 	{"id": "knockback_rounds", "title": "Knockback Rounds", "desc": "+80% knockback on hit", "cat": "utility"},
 	{"id": "compact_form", "title": "Compact Form", "desc": "Smaller body & hitbox, +10% speed, -15 max HP", "cat": "utility"},
 	{"id": "barbed_spikes", "title": "Barbed Spikes", "desc": "+6 contact damage, more spikes", "cat": "defense"},
-	{"id": "dash", "title": "Flagellar Dash", "desc": "Dash with Space/Shift (briefly invincible)", "cat": "utility"},
+	{"id": "dash", "title": "Flagellar Dash", "desc": "Dash with Space/Shift (briefly invincible)", "cat": "utility", "unique": true},
 	{"id": "magnetism", "title": "Magnetism", "desc": "+90 XP pickup range", "cat": "utility"},
-	{"id": "spore_nova", "title": "Spore Nova", "desc": "Periodically blast spores in all directions", "cat": "offense"},
+	{"id": "spore_nova", "title": "Spore Nova", "desc": "Periodically blast spores in all directions", "cat": "offense", "unique": true},
 	{"id": "twin_spores", "title": "Twin Spores", "desc": "+1 projectile per shot", "cat": "offense"},
 ]
 
@@ -277,7 +277,11 @@ func add_xp(amount: float) -> void:
 
 
 func get_random_mutations(count: int) -> Array:
-	var normal := MUTATIONS.duplicate()
+	var normal := []
+	for m in MUTATIONS:
+		if m.get("unique", false) and int(stacks.get(m.id, 0)) > 0:
+			continue
+		normal.append(m)
 	var risky := UNSTABLE_MUTATIONS.duplicate()
 	normal.shuffle()
 	risky.shuffle()
