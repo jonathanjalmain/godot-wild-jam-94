@@ -81,7 +81,7 @@ func _handle_shooting(delta: float) -> void:
 	if target == null:
 		return
 	_fire_cooldown = 1.0 / max(GameState.fire_rate, 0.01)
-	Audio.play("shoot", -22.0, 0.08)
+	Audio.play("shoot", -30.0, 0.08)
 	_fire_at(target.global_position)
 
 
