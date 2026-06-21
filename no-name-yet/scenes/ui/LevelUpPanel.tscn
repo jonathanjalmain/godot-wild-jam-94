@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://scripts/level_up_panel.gd" id="1"]
+[ext_resource type="Theme" path="res://ui/theme.tres" id="2"]
 
 [node name="LevelUpPanel" type="CanvasLayer"]
 script = ExtResource("1")
@@ -10,13 +11,14 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+theme = ExtResource("2")
 
 [node name="Dim" type="ColorRect" parent="Control"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color(0, 0, 0, 0.6)
+color = Color(0.02, 0.05, 0.06, 0.82)
 
 [node name="Center" type="CenterContainer" parent="Control"]
 layout_mode = 1
@@ -24,18 +26,29 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 
-[node name="Panel" type="PanelContainer" parent="Control/Center"]
-layout_mode = 2
-
-[node name="VBox" type="VBoxContainer" parent="Control/Center/Panel"]
-layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="Title" type="Label" parent="Control/Center/Panel/VBox"]
-layout_mode = 2
-text = "MUTATION - choose an evolution"
-horizontal_alignment = 1
-
-[node name="Choices" type="VBoxContainer" parent="Control/Center/Panel/VBox"]
+[node name="Box" type="VBoxContainer" parent="Control/Center"]
 layout_mode = 2
 theme_override_constants/separation = 8
+
+[node name="Header" type="Label" parent="Control/Center/Box"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.55, 1, 0.85, 1)
+theme_override_font_sizes/font_size = 56
+text = "MUTATION"
+horizontal_alignment = 1
+
+[node name="Sub" type="Label" parent="Control/Center/Box"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.78, 0.75, 1)
+theme_override_font_sizes/font_size = 22
+text = "Choose an evolution"
+horizontal_alignment = 1
+
+[node name="Spacer" type="Control" parent="Control/Center/Box"]
+custom_minimum_size = Vector2(0, 18)
+layout_mode = 2
+
+[node name="Choices" type="HBoxContainer" parent="Control/Center/Box"]
+layout_mode = 2
+theme_override_constants/separation = 24
+alignment = 1

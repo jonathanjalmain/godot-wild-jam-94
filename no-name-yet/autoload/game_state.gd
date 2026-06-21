@@ -72,41 +72,62 @@ const CELLS := {
 }
 
 const MUTATIONS := [
-	{"id": "extra_arm", "title": "Extra Arm", "desc": "+1 projectile per shot"},
-	{"id": "metabolism", "title": "Metabolism", "desc": "+20% fire rate"},
-	{"id": "compound_eyes", "title": "Compound Eyes", "desc": "+25% range and speed"},
-	{"id": "molt", "title": "Molt", "desc": "+25 max HP and full heal"},
-	{"id": "orbital_spores", "title": "Orbital Spores", "desc": "Orbiting spores that shred nearby foes"},
-	{"id": "pulse_nova", "title": "Pulse Nova", "desc": "Periodic shockwave damaging all around you"},
-	{"id": "spiny_skin", "title": "Spiny Skin", "desc": "Hurt enemies on contact"},
-	{"id": "venom", "title": "Venom", "desc": "Shots poison enemies"},
-	{"id": "mitosis", "title": "Mitosis", "desc": "Shots pierce +1 enemy"},
-	{"id": "carapace", "title": "Carapace", "desc": "Take 12% less damage"},
-	{"id": "regeneration", "title": "Regeneration", "desc": "Regen 2 HP per second"},
-	{"id": "adrenaline", "title": "Adrenaline", "desc": "+15% move speed"},
-	{"id": "hemovore", "title": "Hemovore", "desc": "Heal 2 HP per kill"},
-	{"id": "gigantism", "title": "Gigantism", "desc": "+40 max HP, +15% damage, bigger body"},
-	{"id": "mutated_cells", "title": "Mutated Cells", "desc": "+12% critical hit chance"},
-	{"id": "heavy_rounds", "title": "Heavy Rounds", "desc": "+50% damage, -20% fire rate"},
-	{"id": "hyper_velocity", "title": "Hyper Velocity", "desc": "+40% projectile speed, +15% range"},
-	{"id": "second_heart", "title": "Second Heart", "desc": "+50 max HP, +1 HP/sec"},
-	{"id": "frenzy", "title": "Frenzy", "desc": "+8% crit, +0.5 crit damage"},
-	{"id": "knockback_rounds", "title": "Knockback Rounds", "desc": "+80% knockback on hit"},
-	{"id": "compact_form", "title": "Compact Form", "desc": "Smaller body & hitbox, +10% speed, -15 max HP"},
-	{"id": "barbed_spikes", "title": "Barbed Spikes", "desc": "+6 contact damage, more spikes"},
-	{"id": "dash", "title": "Flagellar Dash", "desc": "Dash with Space/Shift (briefly invincible)"},
-	{"id": "magnetism", "title": "Magnetism", "desc": "+90 XP pickup range"},
-	{"id": "spore_nova", "title": "Spore Nova", "desc": "Periodically blast spores in all directions"},
-	{"id": "twin_spores", "title": "Twin Spores", "desc": "+1 projectile per shot"},
+	{"id": "extra_arm", "title": "Extra Arm", "desc": "+1 projectile per shot", "cat": "offense"},
+	{"id": "metabolism", "title": "Metabolism", "desc": "+20% fire rate", "cat": "offense"},
+	{"id": "compound_eyes", "title": "Compound Eyes", "desc": "+25% range and speed", "cat": "utility"},
+	{"id": "molt", "title": "Molt", "desc": "+25 max HP and full heal", "cat": "defense"},
+	{"id": "orbital_spores", "title": "Orbital Spores", "desc": "Orbiting spores that shred nearby foes", "cat": "offense"},
+	{"id": "pulse_nova", "title": "Pulse Nova", "desc": "Periodic shockwave damaging all around you", "cat": "offense"},
+	{"id": "spiny_skin", "title": "Spiny Skin", "desc": "Hurt enemies on contact", "cat": "defense"},
+	{"id": "venom", "title": "Venom", "desc": "Shots poison enemies", "cat": "offense"},
+	{"id": "mitosis", "title": "Mitosis", "desc": "Shots pierce +1 enemy", "cat": "offense"},
+	{"id": "carapace", "title": "Carapace", "desc": "Take 12% less damage", "cat": "defense"},
+	{"id": "regeneration", "title": "Regeneration", "desc": "Regen 2 HP per second", "cat": "defense"},
+	{"id": "adrenaline", "title": "Adrenaline", "desc": "+15% move speed", "cat": "utility"},
+	{"id": "hemovore", "title": "Hemovore", "desc": "Heal 2 HP per kill", "cat": "defense"},
+	{"id": "gigantism", "title": "Gigantism", "desc": "+40 max HP, +15% damage, bigger body", "cat": "defense"},
+	{"id": "mutated_cells", "title": "Mutated Cells", "desc": "+12% critical hit chance", "cat": "offense"},
+	{"id": "heavy_rounds", "title": "Heavy Rounds", "desc": "+50% damage, -20% fire rate", "cat": "offense"},
+	{"id": "hyper_velocity", "title": "Hyper Velocity", "desc": "+40% projectile speed, +15% range", "cat": "offense"},
+	{"id": "second_heart", "title": "Second Heart", "desc": "+50 max HP, +1 HP/sec", "cat": "defense"},
+	{"id": "frenzy", "title": "Frenzy", "desc": "+8% crit, +0.5 crit damage", "cat": "offense"},
+	{"id": "knockback_rounds", "title": "Knockback Rounds", "desc": "+80% knockback on hit", "cat": "utility"},
+	{"id": "compact_form", "title": "Compact Form", "desc": "Smaller body & hitbox, +10% speed, -15 max HP", "cat": "utility"},
+	{"id": "barbed_spikes", "title": "Barbed Spikes", "desc": "+6 contact damage, more spikes", "cat": "defense"},
+	{"id": "dash", "title": "Flagellar Dash", "desc": "Dash with Space/Shift (briefly invincible)", "cat": "utility"},
+	{"id": "magnetism", "title": "Magnetism", "desc": "+90 XP pickup range", "cat": "utility"},
+	{"id": "spore_nova", "title": "Spore Nova", "desc": "Periodically blast spores in all directions", "cat": "offense"},
+	{"id": "twin_spores", "title": "Twin Spores", "desc": "+1 projectile per shot", "cat": "offense"},
 ]
 
 const UNSTABLE_MUTATIONS := [
-	{"id": "glass_cells", "title": "Glass Cells", "desc": "+40% damage, -30% max HP", "unstable": true},
-	{"id": "berserk", "title": "Berserk", "desc": "+50% fire rate, +25% damage taken", "unstable": true},
-	{"id": "cancerous_growth", "title": "Cancerous Growth", "desc": "+70 max HP, -20% move speed", "unstable": true},
-	{"id": "toxic_blood", "title": "Toxic Blood", "desc": "+35% damage, lose 1.5 HP/sec", "unstable": true},
-	{"id": "unstable_mitosis", "title": "Unstable Mitosis", "desc": "Pierce +2, -20% damage", "unstable": true},
+	{"id": "glass_cells", "title": "Glass Cells", "desc": "+40% damage, -30% max HP", "cat": "unstable", "unstable": true},
+	{"id": "berserk", "title": "Berserk", "desc": "+50% fire rate, +25% damage taken", "cat": "unstable", "unstable": true},
+	{"id": "cancerous_growth", "title": "Cancerous Growth", "desc": "+70 max HP, -20% move speed", "cat": "unstable", "unstable": true},
+	{"id": "toxic_blood", "title": "Toxic Blood", "desc": "+35% damage, lose 1.5 HP/sec", "cat": "unstable", "unstable": true},
+	{"id": "unstable_mitosis", "title": "Unstable Mitosis", "desc": "Pierce +2, -20% damage", "cat": "unstable", "unstable": true},
 ]
+
+const CAT_COLORS := {
+	"offense": Color(0.95, 0.45, 0.4),
+	"defense": Color(0.45, 0.7, 0.95),
+	"utility": Color(0.55, 0.95, 0.7),
+	"unstable": Color(0.85, 0.45, 0.95),
+}
+
+
+func cat_color(cat: String) -> Color:
+	return CAT_COLORS.get(cat, Color(0.7, 0.8, 0.8))
+
+
+func mutation_title(id: String) -> String:
+	for m in MUTATIONS:
+		if m.id == id:
+			return m.title
+	for m in UNSTABLE_MUTATIONS:
+		if m.id == id:
+			return m.title
+	return id
 
 
 func reset() -> void:

@@ -1,7 +1,8 @@
 extends CanvasLayer
 
 @onready var _root: Control = $Control
-@onready var _choices: VBoxContainer = $Control/Center/Panel/VBox/Choices
+@onready var _choices: HBoxContainer = $Control/Center/Box/Choices
+@onready var _sub: Label = $Control/Center/Box/Sub
 
 var _pending: int = 0
 var _showing: bool = false
@@ -27,20 +28,81 @@ func _show_next() -> void:
 		return
 	_pending -= 1
 	_showing = true
+	_sub.text = "Level %d reached - choose an evolution" % GameState.level
 	for c in _choices.get_children():
 		c.queue_free()
 	for m in GameState.get_random_mutations(3):
-		var b := Button.new()
-		b.custom_minimum_size = Vector2(380, 80)
-		if m.get("unstable", false):
-			b.text = "[UNSTABLE] %s\n%s" % [m.title, m.desc]
-			b.modulate = Color(1.0, 0.55, 0.55)
-		else:
-			b.text = "%s\n%s" % [m.title, m.desc]
-		b.pressed.connect(_on_choice.bind(m.id))
-		_choices.add_child(b)
+		_choices.add_child(_make_card(m))
+	if _choices.get_child_count() > 0:
+		(_choices.get_child(0) as Control).grab_focus()
 	_root.visible = true
 	get_tree().paused = true
+
+
+func _make_card(m: Dictionary) -> Button:
+	var unstable: bool = m.get("unstable", false)
+	var accent: Color = GameState.cat_color(m.cat)
+	var tag_text: String = "UNSTABLE" if unstable else String(m.cat).to_upper()
+
+	var card := Button.new()
+	card.custom_minimum_size = Vector2(300, 330)
+	card.focus_mode = Control.FOCUS_ALL
+	card.add_theme_stylebox_override("normal", _card_box(accent, 0.0))
+	card.add_theme_stylebox_override("hover", _card_box(accent, 0.7))
+	card.add_theme_stylebox_override("pressed", _card_box(accent, 0.9))
+	card.add_theme_stylebox_override("focus", _card_box(accent, 0.7))
+	card.pressed.connect(_on_choice.bind(m.id))
+
+	var vb := VBoxContainer.new()
+	vb.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	vb.offset_left = 20
+	vb.offset_top = 20
+	vb.offset_right = -20
+	vb.offset_bottom = -20
+	vb.add_theme_constant_override("separation", 10)
+	vb.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	card.add_child(vb)
+
+	var tag := _label(tag_text, 16, accent)
+	vb.add_child(tag)
+
+	var title := _label(m.title, 28, Color(0.96, 1.0, 0.97))
+	title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	vb.add_child(title)
+
+	var owned: int = int(GameState.stacks.get(m.id, 0))
+	if owned > 0:
+		vb.add_child(_label("OWNED x%d" % owned, 15, Color(1.0, 0.85, 0.4)))
+
+	var spacer := Control.new()
+	spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	vb.add_child(spacer)
+
+	var desc := _label(m.desc, 17, Color(0.74, 0.85, 0.83))
+	desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	vb.add_child(desc)
+
+	return card
+
+
+func _label(text: String, size: int, color: Color) -> Label:
+	var l := Label.new()
+	l.text = text
+	l.add_theme_font_size_override("font_size", size)
+	l.add_theme_color_override("font_color", color)
+	l.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	return l
+
+
+func _card_box(accent: Color, highlight: float) -> StyleBoxFlat:
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = Color(0.06 + accent.r * 0.05 * highlight, 0.12 + accent.g * 0.04 * highlight, 0.14, 0.97)
+	sb.border_color = Color(accent.r, accent.g, accent.b, 0.45 + 0.55 * highlight)
+	sb.set_border_width_all(2)
+	sb.border_width_top = 5
+	sb.set_corner_radius_all(16)
+	return sb
 
 
 func _on_choice(id: String) -> void:
