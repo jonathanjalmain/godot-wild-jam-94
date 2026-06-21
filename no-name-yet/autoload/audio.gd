@@ -20,6 +20,7 @@ func _ready() -> void:
 	add_child(_music)
 	_sfx["shoot"] = _gen_shoot()
 	_sfx["nova"] = _gen_nova()
+	_sfx["hurt"] = _gen_hurt()
 	_music_stream = _gen_ambient()
 
 
@@ -88,6 +89,23 @@ func _gen_nova() -> AudioStreamWAV:
 		var noise := randf() * 2.0 - 1.0
 		var noise_env := exp(-t * 17.0)
 		s[i] = (tone * 0.7 + noise * 0.5 * noise_env) * env * 0.75
+	return _make_wav(s, false)
+
+
+func _gen_hurt() -> AudioStreamWAV:
+	var dur := 0.2
+	var n := int(SFX_RATE * dur)
+	var s := PackedFloat32Array()
+	s.resize(n)
+	for i in n:
+		var t := float(i) / SFX_RATE
+		var p := t / dur
+		var env := exp(-t * 14.0)
+		var freq := 380.0 - 230.0 * p
+		var tone := sin(TAU * freq * t)
+		var noise := randf() * 2.0 - 1.0
+		var noise_env := exp(-t * 30.0)
+		s[i] = (tone * 0.6 + noise * 0.4 * noise_env) * env * 0.7
 	return _make_wav(s, false)
 
 

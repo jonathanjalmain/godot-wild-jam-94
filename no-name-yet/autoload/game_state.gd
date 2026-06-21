@@ -254,6 +254,7 @@ func take_damage(amount: float) -> void:
 	hp = max(hp - amount, 0.0)
 	hp_changed.emit(hp, max_hp)
 	shake_requested.emit(0.45)
+	Audio.play("hurt", -9.0)
 	if hp <= 0.0:
 		alive = false
 		Audio.play("death")
