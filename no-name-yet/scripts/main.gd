@@ -1,9 +1,11 @@
 extends Node2D
 
 const ENEMY_SCENE := preload("res://scenes/Enemy.tscn")
+const DAMAGE_NUMBER := preload("res://scripts/damage_number.gd")
 const SURVIVE_SECONDS := 600.0
 const MAX_ENEMIES := 140
 const DESPAWN_DIST := 1800.0
+const MAX_DAMAGE_NUMBERS := 120
 
 const ENEMY_TYPES := {
 	"grunt": {"hp": 30.0, "speed": 90.0, "damage": 10.0, "xp": 1.0, "color": Color(0.9, 0.3, 0.3), "scale": 1.0},
@@ -19,6 +21,8 @@ const ENEMY_TYPES := {
 var _elapsed: float = 0.0
 var _won: bool = false
 var _pool: Array = []
+var _dmg_pool: Array = []
+var _dmg_total: int = 0
 
 
 func _ready() -> void:
@@ -90,6 +94,26 @@ func _get_enemy() -> Node:
 
 func _release_enemy(e: Node) -> void:
 	_pool.append(e)
+
+
+func spawn_damage_number(pos: Vector2, amount: float, big: bool = false) -> void:
+	if amount <= 0.0:
+		return
+	var dn
+	if _dmg_pool.size() > 0:
+		dn = _dmg_pool.pop_back()
+	else:
+		if _dmg_total >= MAX_DAMAGE_NUMBERS:
+			return
+		dn = DAMAGE_NUMBER.new()
+		dn.finished.connect(_release_damage_number)
+		add_child(dn)
+		_dmg_total += 1
+	dn.show_damage(pos, amount, Color(1.0, 0.95, 0.6), big)
+
+
+func _release_damage_number(dn) -> void:
+	_dmg_pool.append(dn)
 
 
 func _spawn_one() -> void:

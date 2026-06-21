@@ -41,8 +41,15 @@ func _show_next() -> void:
 
 func _make_card(m: Dictionary) -> Button:
 	var unstable: bool = m.get("unstable", false)
+	var owned: int = int(GameState.stacks.get(m.id, 0))
+	var is_upgrade: bool = m.get("unique", false) and owned > 0
 	var accent: Color = GameState.cat_color(m.cat)
 	var tag_text: String = "UNSTABLE" if unstable else String(m.cat).to_upper()
+	var desc_text: String = m.desc
+	if is_upgrade:
+		accent = Color(1.0, 0.82, 0.3)
+		tag_text = "UPGRADE  Lv %d -> %d" % [owned, owned + 1]
+		desc_text = m.get("up_desc", m.desc)
 
 	var card := Button.new()
 	card.custom_minimum_size = Vector2(300, 330)
@@ -63,15 +70,13 @@ func _make_card(m: Dictionary) -> Button:
 	vb.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	card.add_child(vb)
 
-	var tag := _label(tag_text, 16, accent)
-	vb.add_child(tag)
+	vb.add_child(_label(tag_text, 16, accent))
 
 	var title := _label(m.title, 28, Color(0.96, 1.0, 0.97))
 	title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	vb.add_child(title)
 
-	var owned: int = int(GameState.stacks.get(m.id, 0))
-	if owned > 0:
+	if owned > 0 and not m.get("unique", false):
 		vb.add_child(_label("OWNED x%d" % owned, 15, Color(1.0, 0.85, 0.4)))
 
 	var spacer := Control.new()
@@ -79,7 +84,7 @@ func _make_card(m: Dictionary) -> Button:
 	spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	vb.add_child(spacer)
 
-	var desc := _label(m.desc, 17, Color(0.74, 0.85, 0.83))
+	var desc := _label(desc_text, 17, Color(0.74, 0.85, 0.83))
 	desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	vb.add_child(desc)
 

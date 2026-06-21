@@ -144,6 +144,10 @@ func take_damage(amount: float, from_pos = null) -> void:
 	hp -= amount
 	_flash = 0.1
 	queue_redraw()
+	var parent := get_parent()
+	if parent != null and parent.has_method("spawn_damage_number"):
+		var head := global_position + Vector2(0.0, -(RADIUS * scale.x + 14.0))
+		parent.spawn_damage_number(head, amount, amount >= 30.0)
 	if from_pos != null:
 		_knockback = (global_position - from_pos).normalized() * 220.0 * GameState.knockback_mult
 	if hp <= 0.0:
