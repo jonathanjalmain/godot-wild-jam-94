@@ -1,9 +1,16 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene format=3 uid="uid://bk18qtnuak8lm"]
 
-[ext_resource type="Script" path="res://scripts/main_menu.gd" id="1"]
+[ext_resource type="Script" uid="uid://q2nr04ix8a5o" path="res://scripts/main_menu.gd" id="1"]
 [ext_resource type="Theme" path="res://ui/theme.tres" id="2"]
+[ext_resource type="Shader" uid="uid://dsi2aldmpq8pf" path="res://shaders/petri.gdshader" id="3"]
 
-[node name="MainMenu" type="Control"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1"]
+shader = ExtResource("3")
+shader_parameter/col_top = Color(0.05, 0.1, 0.12, 1)
+shader_parameter/col_bottom = Color(0.03, 0.06, 0.08, 1)
+shader_parameter/cell_color = Color(0.2, 0.45, 0.4, 1)
+
+[node name="MainMenu" type="Control" unique_id=1135013117]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -13,16 +20,8 @@ grow_vertical = 2
 theme = ExtResource("2")
 script = ExtResource("1")
 
-[node name="Background" type="ColorRect" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.04, 0.07, 0.09, 1)
-
-[node name="Center" type="CenterContainer" parent="."]
+[node name="Background" type="ColorRect" parent="." unique_id=456828325]
+material = SubResource("ShaderMaterial_1")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -30,34 +29,42 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBox" type="VBoxContainer" parent="Center"]
+[node name="Center" type="CenterContainer" parent="." unique_id=897479462]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="Center" unique_id=817359454]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="Title" type="Label" parent="Center/VBox"]
+[node name="Title" type="Label" parent="Center/VBox" unique_id=1829594806]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.55, 1, 0.85, 1)
-theme_override_font_sizes/font_size = 80
-text = "MUTATION"
+theme_override_font_sizes/font_size = 88
+text = "SYMBIOSIS"
 horizontal_alignment = 1
 
-[node name="Subtitle" type="Label" parent="Center/VBox"]
+[node name="Subtitle" type="Label" parent="Center/VBox" unique_id=1024648889]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.6, 0.78, 0.75, 1)
 theme_override_font_sizes/font_size = 26
 text = "Survive. Evolve. Mutate."
 horizontal_alignment = 1
 
-[node name="Spacer" type="Control" parent="Center/VBox"]
+[node name="Spacer" type="Control" parent="Center/VBox" unique_id=1660576343]
 custom_minimum_size = Vector2(0, 24)
 layout_mode = 2
 
-[node name="Play" type="Button" parent="Center/VBox"]
+[node name="Play" type="Button" parent="Center/VBox" unique_id=1961797546]
 custom_minimum_size = Vector2(260, 0)
 layout_mode = 2
 text = "Play"
 
-[node name="Quit" type="Button" parent="Center/VBox"]
+[node name="Quit" type="Button" parent="Center/VBox" unique_id=886938935]
 custom_minimum_size = Vector2(260, 0)
 layout_mode = 2
 text = "Quit"

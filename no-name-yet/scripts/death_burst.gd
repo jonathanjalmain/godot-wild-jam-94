@@ -2,5 +2,5 @@ extends CPUParticles2D
 
 
 func _ready() -> void:
-	emitting = true
 	finished.connect(queue_free)
+	set_deferred("emitting", true)

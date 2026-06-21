@@ -3,12 +3,14 @@ extends CanvasLayer
 @onready var _root: Control = $Control
 @onready var _title: Label = $Control/Center/Panel/VBox/Title
 @onready var _restart: Button = $Control/Center/Panel/VBox/Restart
+@onready var _menu: Button = $Control/Center/Panel/VBox/Menu
 
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_root.visible = false
 	_restart.pressed.connect(_on_restart_pressed)
+	_menu.pressed.connect(_on_menu_pressed)
 	GameState.player_died.connect(_on_player_died)
 	GameState.game_won.connect(_on_game_won)
 
@@ -25,8 +27,14 @@ func _show(text: String) -> void:
 	_title.text = text
 	_root.visible = true
 	get_tree().paused = true
+	_restart.grab_focus()
 
 
 func _on_restart_pressed() -> void:
 	get_tree().paused = false
 	get_tree().reload_current_scene()
+
+
+func _on_menu_pressed() -> void:
+	get_tree().paused = false
+	get_tree().change_scene_to_file("res://scenes/ui/MainMenu.tscn")

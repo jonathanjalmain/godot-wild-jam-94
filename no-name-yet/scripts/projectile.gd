@@ -3,7 +3,7 @@ extends Area2D
 var _direction: Vector2 = Vector2.RIGHT
 var _damage: float = 10.0
 var _speed: float = 500.0
-var _lifetime: float = 2.0
+var _lifetime: float = 1.4
 var _pierce: int = 0
 var _poison_dps: float = 0.0
 var _poison_dur: float = 0.0

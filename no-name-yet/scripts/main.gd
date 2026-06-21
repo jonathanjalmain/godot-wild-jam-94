@@ -2,6 +2,8 @@ extends Node2D
 
 const ENEMY_SCENE := preload("res://scenes/Enemy.tscn")
 const SURVIVE_SECONDS := 600.0
+const MAX_ENEMIES := 140
+const DESPAWN_DIST := 1800.0
 
 const ENEMY_TYPES := {
 	"grunt": {"hp": 30.0, "speed": 90.0, "damage": 10.0, "xp": 1.0, "color": Color(0.9, 0.3, 0.3), "scale": 1.0},
@@ -16,11 +18,13 @@ const ENEMY_TYPES := {
 
 var _elapsed: float = 0.0
 var _won: bool = false
+var _pool: Array = []
 
 
 func _ready() -> void:
 	GameState.reset()
 	_spawn_timer.timeout.connect(_on_spawn_timer_timeout)
+	Audio.play_music()
 
 
 func _process(delta: float) -> void:
@@ -35,19 +39,69 @@ func _process(delta: float) -> void:
 func _on_spawn_timer_timeout() -> void:
 	if not GameState.alive or _won:
 		return
-	var count := 1 + int(_elapsed / 90.0)
+	_cull_far_enemies()
+	if get_tree().get_nodes_in_group("enemies").size() >= MAX_ENEMIES:
+		_merge_crowd()
+	var room := MAX_ENEMIES - get_tree().get_nodes_in_group("enemies").size()
+	if room <= 0:
+		return
+	var count := mini(1 + int(_elapsed / 90.0), room)
 	for i in count:
 		_spawn_one()
 
 
+func _merge_crowd() -> void:
+	var enemies := get_tree().get_nodes_in_group("enemies")
+	var merged := {}
+	var done := 0
+	for i in enemies.size():
+		var a = enemies[i]
+		if merged.has(a):
+			continue
+		for j in range(i + 1, enemies.size()):
+			var b = enemies[j]
+			if merged.has(b):
+				continue
+			if a.global_position.distance_to(b.global_position) <= a.world_radius() + b.world_radius():
+				a.absorb(b)
+				b.recycle()
+				merged[a] = true
+				merged[b] = true
+				done += 1
+				break
+		if done >= 25:
+			return
+
+
+func _cull_far_enemies() -> void:
+	for e in get_tree().get_nodes_in_group("enemies"):
+		if e.global_position.distance_to(_player.global_position) > DESPAWN_DIST:
+			e.recycle()
+
+
+func _get_enemy() -> Node:
+	if _pool.size() > 0:
+		return _pool.pop_back()
+	var e := ENEMY_SCENE.instantiate()
+	e.died.connect(_release_enemy)
+	add_child(e)
+	return e
+
+
+func _release_enemy(e: Node) -> void:
+	_pool.append(e)
+
+
 func _spawn_one() -> void:
-	var data: Dictionary = ENEMY_TYPES[_pick_type()]
+	var src: Dictionary = ENEMY_TYPES[_pick_type()]
+	var data := src.duplicate()
+	data["hp"] = float(src["hp"]) * (1.0 + _elapsed * 0.013)
+	data["damage"] = float(src["damage"]) * (1.0 + _elapsed * 0.004)
+	data["speed"] = float(src["speed"]) * (1.0 + _elapsed * 0.0008)
+	data["xp"] = float(src["xp"]) * (1.0 + _elapsed * 0.006)
 	var angle := randf() * TAU
 	var pos := _player.global_position + Vector2.RIGHT.rotated(angle) * spawn_radius
-	var enemy := ENEMY_SCENE.instantiate()
-	enemy.configure(data)
-	add_child(enemy)
-	enemy.global_position = pos
+	_get_enemy().activate(data, pos)
 
 
 func _pick_type() -> String:

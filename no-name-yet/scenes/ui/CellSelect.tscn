@@ -1,0 +1,136 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/cell_select.gd" id="1"]
+[ext_resource type="Theme" path="res://ui/theme.tres" id="2"]
+[ext_resource type="Shader" path="res://shaders/petri.gdshader" id="3"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1"]
+shader = ExtResource("3")
+
+[node name="CellSelect" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource("2")
+script = ExtResource("1")
+
+[node name="Background" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_1")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Center" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Main" type="VBoxContainer" parent="Center"]
+layout_mode = 2
+theme_override_constants/separation = 28
+
+[node name="Title" type="Label" parent="Center/Main"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.55, 1.0, 0.85, 1)
+theme_override_font_sizes/font_size = 56
+text = "CHOOSE YOUR CELL"
+horizontal_alignment = 1
+
+[node name="HBox" type="HBoxContainer" parent="Center/Main"]
+layout_mode = 2
+theme_override_constants/separation = 28
+
+[node name="Hunter" type="PanelContainer" parent="Center/Main/HBox"]
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="Center/Main/HBox/Hunter"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Swatch" type="ColorRect" parent="Center/Main/HBox/Hunter/VBox"]
+custom_minimum_size = Vector2(240, 120)
+layout_mode = 2
+color = Color(0.9, 0.45, 0.4, 1)
+
+[node name="Name" type="Label" parent="Center/Main/HBox/Hunter/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Hunter"
+horizontal_alignment = 1
+
+[node name="Desc" type="Label" parent="Center/Main/HBox/Hunter/VBox"]
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+text = "Aggressive. Fires an extra projectile from the start."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Select" type="Button" parent="Center/Main/HBox/Hunter/VBox"]
+layout_mode = 2
+text = "Select"
+
+[node name="Bulwark" type="PanelContainer" parent="Center/Main/HBox"]
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="Center/Main/HBox/Bulwark"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Swatch" type="ColorRect" parent="Center/Main/HBox/Bulwark/VBox"]
+custom_minimum_size = Vector2(240, 120)
+layout_mode = 2
+color = Color(0.5, 0.7, 0.95, 1)
+
+[node name="Name" type="Label" parent="Center/Main/HBox/Bulwark/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Bulwark"
+horizontal_alignment = 1
+
+[node name="Desc" type="Label" parent="Center/Main/HBox/Bulwark/VBox"]
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+text = "Tanky. Slow but very hard to kill. Begins with Carapace."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Select" type="Button" parent="Center/Main/HBox/Bulwark/VBox"]
+layout_mode = 2
+text = "Select"
+
+[node name="Sprinter" type="PanelContainer" parent="Center/Main/HBox"]
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="Center/Main/HBox/Sprinter"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Swatch" type="ColorRect" parent="Center/Main/HBox/Sprinter/VBox"]
+custom_minimum_size = Vector2(240, 120)
+layout_mode = 2
+color = Color(0.5, 0.95, 0.7, 1)
+
+[node name="Name" type="Label" parent="Center/Main/HBox/Sprinter/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Sprinter"
+horizontal_alignment = 1
+
+[node name="Desc" type="Label" parent="Center/Main/HBox/Sprinter/VBox"]
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+text = "Fast and evasive. Starts with a Dash."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Select" type="Button" parent="Center/Main/HBox/Sprinter/VBox"]
+layout_mode = 2
+text = "Select"
+
+[node name="Back" type="Button" parent="Center/Main"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Back"

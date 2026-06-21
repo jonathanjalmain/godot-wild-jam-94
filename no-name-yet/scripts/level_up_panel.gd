@@ -31,8 +31,12 @@ func _show_next() -> void:
 		c.queue_free()
 	for m in GameState.get_random_mutations(3):
 		var b := Button.new()
-		b.text = "%s\n%s" % [m.title, m.desc]
 		b.custom_minimum_size = Vector2(380, 80)
+		if m.get("unstable", false):
+			b.text = "[UNSTABLE] %s\n%s" % [m.title, m.desc]
+			b.modulate = Color(1.0, 0.55, 0.55)
+		else:
+			b.text = "%s\n%s" % [m.title, m.desc]
 		b.pressed.connect(_on_choice.bind(m.id))
 		_choices.add_child(b)
 	_root.visible = true

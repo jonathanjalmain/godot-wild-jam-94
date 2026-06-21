@@ -11,7 +11,7 @@ func _ready() -> void:
 
 
 func _on_play_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/Main.tscn")
+	get_tree().change_scene_to_file("res://scenes/ui/CellSelect.tscn")
 
 
 func _on_quit_pressed() -> void:
