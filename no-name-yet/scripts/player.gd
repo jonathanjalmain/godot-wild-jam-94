@@ -81,7 +81,7 @@ func _handle_shooting(delta: float) -> void:
 	if target == null:
 		return
 	_fire_cooldown = 1.0 / max(GameState.fire_rate, 0.01)
-	Audio.play("shoot", -12.0)
+	Audio.play("shoot", -13.0, 0.08)
 	_fire_at(target.global_position)
 
 
@@ -100,7 +100,7 @@ func _handle_nova(delta: float) -> void:
 		get_parent().add_child(p)
 		p.global_position = global_position
 		p.setup(dir, dmg, GameState.projectile_speed, GameState.projectile_pierce, GameState.poison_dps, GameState.poison_duration)
-	Audio.play("shoot", -8.0)
+	Audio.play("nova", -6.0)
 
 
 func _handle_pulse(delta: float) -> void:
@@ -119,7 +119,7 @@ func _handle_pulse(delta: float) -> void:
 	get_parent().add_child(ring)
 	ring.global_position = global_position
 	ring.max_radius = radius
-	Audio.play("hit", -6.0)
+	Audio.play("nova", -7.0)
 
 
 func _find_nearest_enemy() -> Node2D:
